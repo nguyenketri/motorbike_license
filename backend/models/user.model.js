@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -39,6 +39,27 @@ const userSchema = new mongoose.Schema(
   },
 );
 
+// Giữ lại cái này để tự băm mật khẩu khi Register (Rất tiện)
+// Bỏ tham số next ở hàm async function ()
+userSchema.pre("save", async function () {
+  // Nếu mật khẩu không bị chỉnh sửa thì thoát ra luôn (bằng return)
+  if (!this.isModified("password")) return;
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+
+  // KHÔNG CẦN GỌI next() Ở ĐÂY NỮA
+});
+
 // tạo Model từ Schema và Export
 const User = mongoose.model("User", userSchema);
-module.exports = User;
+// HÀM TIỆN ÍCH ĐỘC LẬP (Không nằm trong Schema.methods)
+const comparePassword = async (enteredPassword, hashedPassword) => {
+  return await bcrypt.compare(enteredPassword, hashedPassword);
+};
+
+// EXPORT CẢ HAI ĐỐI TƯỢNG RA NGOÀI DƯỚI DẠNG OBJECT
+module.exports = {
+  User,
+  comparePassword,
+};

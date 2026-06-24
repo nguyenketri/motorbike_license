@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const { User } = require("../models/user.model");
 
 class UserRepository {
   // Tìm user theo email (bao gồm cả password để phục vụ login)

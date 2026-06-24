@@ -1,32 +1,37 @@
+// Import các thư viện cần thiết
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+const cors = require("cors"); // Thư viện cho phép FE gọi API tránh bị lỗi CORS
+require("dotenv").config(); // Kích hoạt đọc file .env
+const userRoutes = require("./routes/user.routes");
 
+// 2. IMPORT các cấu hình và routes tự viết
+const connectDB = require("./config/database");
+
+// const questionRoutes = require(""./routes/question.routes");
+// const examRoutes = require("./routes/exa,.routes");
+
+// 3. Khởi tạo Ứng dụng Express
 const app = express();
 
-// Bật các tính năng hỗ trợ
-app.use(cors());
-app.use(express.json()); // Giúp server đọc được dữ liệu JSON gửi lên
+// 4. Kết nối Database
+connectDB();
 
-// Kết nối với cơ sở dữ liệu MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Đã kết nối thành công với MongoDB!"))
-  .catch((err) => console.log("❌ Lỗi kết nối MongoDB:", err));
+// 5 cấu hình Middleware toàn cục
+app.use(cors()); // cho phép các ứng dụng khác React, Vue, Flutter gọi API
+app.use(express.json()); // Cho phép Express đọc data từ JSON gửi lên req.body
 
-// Một API test thử để kiểm tra server có sống không
-app.get("/", (req, res) => {
-  res.send("Chào mừng đến với Backend Ôn thi GPLX!");
-});
+// 6 ĐỊnh nghĩa các đường dẫn API (ROUTES) cho USER
 
-// Định tuyến (Routes)
-app.use("/api/questions", require("./routes/question"));
-app.use("/api/auth", require("./routes/auth"));
-app.use("/", require("./routes/history"));
+app.use("/api/user", userRoutes);
 
-// Khởi động server
+// Sau này có folder routes, sẽ gắn vào đây
+// app.use("/api/question", questionRoutes);
+// app.use("/api/exams", examRoutes);
+
+//7. KHởi chạy SERVER (LISTEN PORT)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server đang chạy tại: http://localhost:${PORT}`);
+  console.log(`=========================================`);
+  console.log(` Server đang chạy tại: http://localhost:${PORT}`);
+  console.log(`=========================================`);
 });
