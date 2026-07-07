@@ -48,6 +48,20 @@ class UserController {
       res.status(400).json({ message: error.message });
     }
   }
+
+  // 3. Lấy thông tin user đang đăng nhập (dùng để khôi phục session khi F5 trang)
+  // req.user đã được middleware `protect` gắn sẵn nên không cần query lại DB
+  async getProfile(req, res) {
+    return res.status(200).json({
+      message: "Get profile thành công",
+      data: {
+        _id: req.user._id,
+        username: req.user.username,
+        email: req.user.email,
+        role: req.user.role,
+      },
+    });
+  }
 }
 
 module.exports = new UserController();
