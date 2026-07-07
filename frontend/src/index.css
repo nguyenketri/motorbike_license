@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { 
-  font-family: 'Inter', sans-serif; 
+body {
+  font-family: 'Inter', sans-serif;
   background-color: #f0f4f8; /* Màu nền xám xanh nhạt rất sang */
-  color: #2d3748; 
-  line-height: 1.6; 
+  color: #2d3748;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-.app-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.app-container { max-width: 960px; margin: 0 auto; padding: 20px; }
 
 /* --- THANH ĐIỀU HƯỚNG (NAVBAR) --- */
-.navbar { 
-  display: flex; justify-content: center; align-items: center; 
-  background: white; padding: 15px 30px; 
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px; 
+.navbar {
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+  background: white; padding: 15px 30px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px;
   border-radius: 0 0 15px 15px; gap: 10px;
 }
 .nav-link { 
@@ -241,3 +242,11 @@ body {
 .admin-table tr:last-child td { border-bottom: none; }
 .admin-table-title { max-width: 420px; }
 .admin-table-actions { display: flex; gap: 8px; white-space: nowrap; }
+
+/* --- RESPONSIVE CHUNG CHO MÀN HÌNH NHỎ --- */
+@media (max-width: 560px) {
+  .card { padding: 24px; }
+  .app-container { padding: 16px; }
+  .navbar { padding: 12px 16px; gap: 4px; }
+  .nav-link, .btn-logout { padding: 8px 12px; font-size: 14px; }
+}
