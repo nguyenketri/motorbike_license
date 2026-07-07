@@ -2,11 +2,41 @@ const questionService = require("../services/question.service");
 
 class QuestionController {
   async getAllQuestion(req, res) {
-    const result = await questionService.getAllQuestions();
-    res.status(200).json({
-      message: "Get all Question",
-      data: result,
-    });
+    try {
+      const result = await questionService.getAllQuestions();
+      res.status(200).json({
+        message: "Get all Question",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  // Lấy đề thi thử: 25 câu hỏi ngẫu nhiên từ ngân hàng câu hỏi
+  // Đặt route "/random" TRƯỚC "/:id" bên routes để tránh Express hiểu nhầm "random" là 1 Id
+  async getRandomQuestions(req, res) {
+    try {
+      const result = await questionService.getRandomExamSet();
+      res.status(200).json({
+        message: "Get random exam set",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  async getQuestionById(req, res) {
+    try {
+      const result = await questionService.getQuestionById(req.params.id);
+      res.status(200).json({
+        message: "Get question by id",
+        data: result,
+      });
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
   }
 
   async createQuestions(req, res) {
@@ -29,6 +59,34 @@ class QuestionController {
       return res.status(201).json({
         message: "Create Success",
         data: result,
+      });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  // Sửa câu hỏi (Admin) - cho phép sửa 1 phần field, không bắt buộc gửi đủ như create
+  async updateQuestion(req, res) {
+    try {
+      const result = await questionService.updateQuestion(
+        req.params.id,
+        req.body,
+      );
+      return res.status(200).json({
+        message: "Update Success",
+        data: result,
+      });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  // Xoá câu hỏi (Admin)
+  async deleteQuestion(req, res) {
+    try {
+      await questionService.deleteQuestion(req.params.id);
+      return res.status(200).json({
+        message: "Delete Success",
       });
     } catch (error) {
       res.status(400).json({ message: error.message });
