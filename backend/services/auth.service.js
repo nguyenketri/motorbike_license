@@ -35,7 +35,6 @@ class AuthService {
   async login({ email, password }) {
     // Goi qua repository
     const user = await userRepository.findByEmailWithPassword(email);
-    console.log(user);
     if (!user) {
       throw new Error("Email or Password not correct!");
     }

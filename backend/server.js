@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors"); // Thư viện cho phép FE gọi API tránh bị lỗi CORS
 require("dotenv").config(); // Kích hoạt đọc file .env
 const userRoutes = require("./routes/user.routes");
-
+const questionRoutes = require("./routes/question.routes");
 // 2. IMPORT các cấu hình và routes tự viết
 const connectDB = require("./config/database");
 
@@ -23,6 +23,10 @@ app.use(express.json()); // Cho phép Express đọc data từ JSON gửi lên r
 // 6 ĐỊnh nghĩa các đường dẫn API (ROUTES) cho USER
 
 app.use("/api/user", userRoutes);
+
+// 6 ĐỊnh nghĩa các đường dẫn API (ROUTES) cho USER
+
+app.use("/api/questions", questionRoutes);
 
 // Sau này có folder routes, sẽ gắn vào đây
 // app.use("/api/question", questionRoutes);

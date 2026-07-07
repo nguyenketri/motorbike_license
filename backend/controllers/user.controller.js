@@ -1,5 +1,4 @@
 const authService = require("../services/auth.service");
-const AuthService = require("../services/auth.service");
 
 class UserController {
   // 1. Logic xử lý đăng ký
@@ -38,7 +37,6 @@ class UserController {
       }
 
       const result = await authService.login({ email, password });
-      console.log("result", result);
 
       if (result) {
         return res.status(200).json({
