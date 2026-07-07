@@ -4,11 +4,9 @@ const cors = require("cors"); // Thư viện cho phép FE gọi API tránh bị 
 require("dotenv").config(); // Kích hoạt đọc file .env
 const userRoutes = require("./routes/user.routes");
 const questionRoutes = require("./routes/question.routes");
+const historyRoutes = require("./routes/history.routes");
 // 2. IMPORT các cấu hình và routes tự viết
 const connectDB = require("./config/database");
-
-// const questionRoutes = require(""./routes/question.routes");
-// const examRoutes = require("./routes/exa,.routes");
 
 // 3. Khởi tạo Ứng dụng Express
 const app = express();
@@ -20,17 +18,15 @@ connectDB();
 app.use(cors()); // cho phép các ứng dụng khác React, Vue, Flutter gọi API
 app.use(express.json()); // Cho phép Express đọc data từ JSON gửi lên req.body
 
-// 6 ĐỊnh nghĩa các đường dẫn API (ROUTES) cho USER
+// Endpoint kiểm tra nhanh server còn sống hay không (FE dùng để debug kết nối)
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "Server đang chạy" });
+});
 
+// 6. ĐỊnh nghĩa các đường dẫn API (ROUTES)
 app.use("/api/user", userRoutes);
-
-// 6 ĐỊnh nghĩa các đường dẫn API (ROUTES) cho USER
-
 app.use("/api/questions", questionRoutes);
-
-// Sau này có folder routes, sẽ gắn vào đây
-// app.use("/api/question", questionRoutes);
-// app.use("/api/exams", examRoutes);
+app.use("/api/history", historyRoutes);
 
 //7. KHởi chạy SERVER (LISTEN PORT)
 const PORT = process.env.PORT || 5000;
